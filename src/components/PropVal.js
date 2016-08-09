@@ -55,6 +55,12 @@ function previewArray(val) {
 }
 
 function previewObject(val) {
+  let isImmutable = false;
+  if(typeof val.toJS === 'function') {
+    isImmutable = true;
+    val = val.toJS();
+  }
+
   const names = Object.keys(val);
   const items = {};
   names.slice(0, 3).forEach((name, i) => {
@@ -70,7 +76,7 @@ function previewObject(val) {
   }
   return (
     <span style={valueStyles.object}>
-      {'{'}{createFragment(items)}{'}'}
+      {isImmutable ? 'Immutable {' : '{'}{createFragment(items)}{'}'}
     </span>
   );
 }

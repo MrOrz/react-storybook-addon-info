@@ -98,6 +98,12 @@ function previewArray(val) {
 }
 
 function previewObject(val) {
+  var isImmutable = false;
+  if (typeof val.toJS === 'function') {
+    isImmutable = true;
+    val = val.toJS();
+  }
+
   var names = (0, _keys2.default)(val);
   var items = {};
   names.slice(0, 3).forEach(function (name, i) {
@@ -118,7 +124,7 @@ function previewObject(val) {
   return _react2.default.createElement(
     'span',
     { style: valueStyles.object },
-    '{',
+    isImmutable ? 'Immutable {' : '{',
     (0, _reactAddonsCreateFragment2.default)(items),
     '}'
   );
